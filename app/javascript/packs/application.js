@@ -8,13 +8,16 @@
 // layout file, like app/views/layouts/application.html.erb
 // import "./application.css";
 import Vue from 'vue/dist/vue.esm'
+// import Vuex from 'vuex'
 import VueResource from 'vue-resource'
 import Vuetify from 'vuetify'
 import App from '../app.vue'
 import router from '../router'
+import { store } from '../store'
 import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
+// Vue.use(Vuex)
 Vue.use(Vuetify)
 Vue.use(VueResource)
 
@@ -22,8 +25,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
     el: '#app',
     router,
+    store,
     template: '<App />',
-    components: { App }
+    components: { App },
+
+    beforeCreate: function () {
+      fetch('/api/posts.json')
+        .then((response) => response.json())
+        .then((data) => {
+          this.posts = data;
+        });
+    }
   })
 
 })
