@@ -1,6 +1,6 @@
-class PostsController < ApplicationController
+class Api::PostsController < ApplicationController
   def index
-    @posts = Post.all
+    @posts = Post.order(created_at: :desc).last(10)
     # respond_to do |format|
     #   format.json {  }
     # end
@@ -13,7 +13,20 @@ class PostsController < ApplicationController
 
   def create
     build_post
-    save_post or render :new
+
+    respond_to do |format|
+      if @post.save
+
+
+        format.html { redirect_to @post, notice: 'Card was successfully created.' }
+        format.json { render :show, status: :created, location: [:api, @post] }
+      else
+        format.html { render :new }
+        format.json { render json: @post.errors.full_messages, status: :unprocessable_entity }
+      end
+    end
+    # build_post
+    # save_post or render :new
   end
 
   def edit

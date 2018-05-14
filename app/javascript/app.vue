@@ -1,32 +1,44 @@
 <template>
   <v-app>
+    <v-navigation-drawer app temporary v-model="sideBar">
+      <v-list>
+        <v-list-tile to="/categories">
+          <v-list-tile-content>
+            <v-list-tile-title>Categories</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile to='/posts'>
+          <v-list-tile-content>
+            <v-list-tile-title>Posts</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile to="/categories/1">
+          <v-list-tile-content>
+            <v-list-tile-title>Category</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile to="/posts/1">
+          <v-list-tile-content>
+            <v-list-tile-title>Post</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
     <v-toolbar app>
-      <v-toolbar-title>BlogMass</v-toolbar-title>
+      <v-toolbar-side-icon
+        @click.stop="sideBar = !sideBar"
+        class="hidden-sm-and-up "></v-toolbar-side-icon>
+      <v-toolbar-title>
+        <router-link to="/" tag="span" style="cursor: pointer">BlogMass</router-link>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
-
+      <v-toolbar-items class="hidden-xs-only">
+        <v-btn flat to="/categories">Categories</v-btn>
+        <v-btn flat to='/post/new'>Create post</v-btn>
+      </v-toolbar-items>
     </v-toolbar>
     <v-content>
-      <v-container fluid>
-         <v-layout column wrap align-center> 
-        <v-flex xs12 sm6>
-            <div v-for="post in posts" :key="post.id">
-              <v-card class="my-3" hover>
-                <v-card-title
-                >{{ post.name }}
-                  
-                </v-card-title>
-                <v-card-text>
-                  {{ post.content }}
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn flat class="blue--text">Read More</v-btn>
-                </v-card-actions>
-              </v-card>
-            </div>
-          </v-flex>
-        </v-layout>
-      </v-container>
+      <router-view></router-view>
     </v-content>
   </v-app>
 </template>
@@ -35,22 +47,12 @@
 export default {
   data: function () {
     return {
-      posts: []
+      sideBar: false
     }
-  },
-  beforeMount: function () {
-    fetch('/posts.json')
-      .then((response) => response.json())
-      .then((data) => {
-        this.posts = data;
-      });
   }
 }
 </script>
 
 <style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
-}
+
 </style>

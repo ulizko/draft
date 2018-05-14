@@ -1,6 +1,6 @@
-class CategoriesController < ApplicationController
+class Api::CommentsController < ApplicationController
   def index
-    @categories = Category.all
+    @comments = Comment.all
   end
 
   def new
