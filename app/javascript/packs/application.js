@@ -6,5 +6,23 @@
 //
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
+import "./application.css";
+import 'vuetify/dist/vuetify.min.css' 
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import Vue from 'vue/dist/vue.esm'
+import Vuetify from 'vuetify'
+import App from '../app.vue'
+
+Vue.use(Vuetify)
+
+document.addEventListener('DOMContentLoaded', () => {
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: "Can you say hello?"
+    },
+    components: { App }
+  })
+})
 
 console.log('Hello World from Webpacker')

@@ -1,6 +1,17 @@
-
+<v-card>
 <% @posts.each do |post| %>
-  <h1><%= post.name %> </h1>
-  <p> <%= post.content %> </p>
-  Category: <%= post.category.name %>  
+<v-flex>
+<v-card color="blue-grey darken-2" class="white--text">
+<v-card-title primary-title>
+            <div>
+              <div class="headline"><%= post.name %></div>
+              <span class="grey--text"><%= post.category.name %></span>
+            </div>
+          </v-card-title>
+          <v-card-text>
+              <%= post.content %>
+            </v-card-text>
+</v-card>
+</v-flex>
 <% end %>
+</v-card>
