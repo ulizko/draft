@@ -66,14 +66,14 @@ export default {
   },
   methods: {
     onCreatePost: function() {
-      const data = {
+      const postData = {
         name: this.name,
         content: this.content,
-        category_id: this.categoryId
+        categoryId: this.categoryId
       }
-      this.$http.post('/api/posts.json', { post: data }).then((response) => {
-        this.$router.push('/')
-      })
+      this.$store.dispatch('createPost', postData)
+      this.$router.push('/')
+      
     }
   }
 }

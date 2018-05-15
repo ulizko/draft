@@ -1,7 +1,9 @@
 import Vue from 'vue/dist/vue.esm'
 import Vuex from 'vuex'
+import VueResource from 'vue-resource'
 
 Vue.use(Vuex)
+Vue.use(VueResource)
 
 export const store = new Vuex.Store({
   state: {
@@ -25,10 +27,27 @@ export const store = new Vuex.Store({
     },
     loadLastestPosts: function(state, payload) {
       state.lastestPosts = payload;
-    }
+    },
+    createPost(state, payload) {
+      state.loadedPosts.unshift(payload)
+    },
 
   },
   actions: {
-
+    createPost: function({ commit, getters }, payload) {
+      const post = {
+        name: payload.name,
+        content: payload.content,
+        category_id: payload.categoryId
+      }
+      Vue.http.post('/api/posts.json', { post })
+        .then((response) => {
+          console.log(response)
+          // commit('createPost', )
+      })
+        .catch((error) => {
+          console.log(error)
+        })
+      }
   }
 })

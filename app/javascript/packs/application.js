@@ -7,7 +7,7 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 import Vue from 'vue/dist/vue.esm'
-import VueResource from 'vue-resource'
+// import VueResource from 'vue-resource'
 import Vuetify from 'vuetify'
 import App from '../app.vue'
 import router from '../router'
@@ -16,7 +16,7 @@ import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.use(Vuetify)
-Vue.use(VueResource)
+// Vue.use(VueResource)
 
 
 document.addEventListener('DOMContentLoaded', () => {
