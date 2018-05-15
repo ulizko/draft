@@ -15,7 +15,8 @@ export default {
   props: ['id'],
   computed: {
     post: function () {
-      return this.$store.getters.loadedLastestPost(this.id)  
+      console.log(this.$route.params.id)
+      return this.$store.getters.loadedLastestPost(this.$route.params.id)
     }
   }
 

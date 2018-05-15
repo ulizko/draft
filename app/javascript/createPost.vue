@@ -5,6 +5,17 @@
         <h4>Create Post</h4>
       </v-flex>
     </v-layout>
+    <v-layout row v-if="errors">
+      <v-flex xs12 sm6 offset-sm3>
+        <v-alert collor='error' dismissible @input="onClose" :value="true">
+          <template v-for="error in errors">
+            <v-card flat dark color="error">
+              <v-card-title class="title">Oops! {{ error }}</v-card-title>
+            </v-card>
+          </template>
+        </v-alert>
+      </v-flex>
+    </v-layout>
     <v-layout row>
       <v-flex xs12>
         <form @submit.prevent="onCreatePost">
@@ -64,7 +75,15 @@ export default {
       categoryId: '',
     }
   },
+  computed: {
+    errors: function() {
+      return this.$store.getters.errors;
+    }
+  },
   methods: {
+    onClose: function() {
+      this.$store.commit('clearError')
+    },
     onCreatePost: function() {
       const postData = {
         name: this.name,
@@ -72,8 +91,9 @@ export default {
         categoryId: this.categoryId
       }
       this.$store.dispatch('createPost', postData)
-      this.$router.push('/')
-      
+      // if (this.errors === null) {
+      //   this.$router.push('/')
+      // }
     }
   }
 }

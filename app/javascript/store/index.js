@@ -8,17 +8,19 @@ Vue.use(VueResource)
 export const store = new Vuex.Store({
   state: {
     categories: [],
-    lastestPosts: []
+    lastestPosts: [],
+    errors: null
   },
   getters: {
     loadedLastestPost: function(state) {
       return (postId) => {
-        console.log(postId)
         return state.lastestPosts.find((post) => {
-          console.log(post)
           return post.id == postId
         })
       }
+    },
+    errors: function (state) {
+      return state.errors;
     }
   },
   mutations: {
@@ -28,10 +30,15 @@ export const store = new Vuex.Store({
     loadLastestPosts: function(state, payload) {
       state.lastestPosts = payload;
     },
-    createPost(state, payload) {
-      state.loadedPosts.unshift(payload)
+    createPost: function(state, payload) {
+      state.lastestPosts.unshift(payload)
     },
-
+    setError: function(state, payload) {
+      state.errors = payload
+    },
+    clearError: function(state, payload) {
+      state.errors = null;
+    }
   },
   actions: {
     createPost: function({ commit, getters }, payload) {
@@ -42,11 +49,12 @@ export const store = new Vuex.Store({
       }
       Vue.http.post('/api/posts.json', { post })
         .then((response) => {
-          console.log(response)
-          // commit('createPost', )
+          commit('createPost', response.body)
+          Vue.router.push('/')
       })
-        .catch((error) => {
-          console.log(error)
+        .catch((errors) => {
+          commit('setError', errors.body)
+          console.log(errors)
         })
       }
   }
