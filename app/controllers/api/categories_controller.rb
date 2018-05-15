@@ -1,6 +1,6 @@
 class Api::CategoriesController < ApplicationController
   def index
-    @categories = Category.all
+    @categories = Category.includes(:posts)
   end
 
   def new

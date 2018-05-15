@@ -12,7 +12,12 @@
 
 <script>
 export default {
-  props: ['post']
+  props: ['id'],
+  computed: {
+    post: function () {
+      return this.$store.getters.loadedLastestPost(this.id)  
+    }
+  }
 
 }
 </script>

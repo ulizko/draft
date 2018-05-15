@@ -66,18 +66,12 @@ export default {
   },
   methods: {
     onCreatePost: function() {
-      const headers = {
-        'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
-      }
       const data = {
-        post: {
-          name: this.name,
-          content: this.content,
-          category_id: this.categoryId
-        }
+        name: this.name,
+        content: this.content,
+        category_id: this.categoryId
       }
-      this.$http.post('/api/posts.json', data, { headers }).then((response) => {
-        console.log(response)
+      this.$http.post('/api/posts.json', { post: data }).then((response) => {
         this.$router.push('/')
       })
     }

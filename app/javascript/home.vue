@@ -23,19 +23,18 @@
 
 <script>
 export default {
-  data: function () {
-    return {
-      posts: []
+  computed: {
+    posts: function() {
+      return this.$store.state.lastestPosts;
     }
   },
-  beforeMount: function () {
-    fetch('/api/posts.json')
-      .then((response) => response.json())
-      .then((data) => {
-        this.posts = data;
-      });
+  beforeCreate: function () {
+    this.$http.get('/api/posts.json')
+      .then((response) => { 
+        console.log(response.body)
+        this.$store.commit('loadLastestPosts', response.body)
+      })
   }
-
 }
 </script>
 

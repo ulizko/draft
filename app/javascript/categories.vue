@@ -6,18 +6,17 @@
 
 <script>
   export default {
-    data: function() {
-      return {
-        categories: []
+    computed: {
+      categories: function() {
+        return this.$store.state.categories;
       }
     },
-    beforeMount: function() {
-      fetch('/api/categories.json')
-      .then((response) => response.json())
-      .then((data) => {
-        this.categories = data;
-      });
-    }
-
+    beforeCreate: function () {
+      this.$http.get('/api/categories.json')
+        .then((response) => { 
+          console.log(response.body)
+          this.$store.commit('loadCategories', response.body)
+        })
+    },
   }
 </script>
