@@ -12,6 +12,13 @@ export const store = new Vuex.Store({
     errors: null
   },
   getters: {
+    loadedCategory: function(state) {
+      return (categoryId) => {
+        return state.categories.find((category) => {
+          return category.id == categoryId
+        })
+      }
+    },
     loadedLastestPost: function(state) {
       return (postId) => {
         return state.lastestPosts.find((post) => {
