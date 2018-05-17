@@ -6,13 +6,9 @@
       </v-flex>
     </v-layout>
     <v-layout row v-if="errors">
-      <v-flex xs12 sm6 offset-sm3>
+      <v-flex xs12>
         <v-alert collor='error' dismissible @input="onClose" :value="true">
-          <template v-for="error in errors">
-            <v-card flat dark color="error">
-              <v-card-title class="title">Oops! {{ error }}</v-card-title>
-            </v-card>
-          </template>
+          <p v-for="(error, i) in errors" :key='i'>{{ error }}</p>
         </v-alert>
       </v-flex>
     </v-layout>

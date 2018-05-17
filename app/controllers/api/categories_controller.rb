@@ -1,6 +1,6 @@
 class Api::CategoriesController < ApplicationController
   def index
-    @categories = Category.includes(:posts)
+    @categories = Category.includes(:posts).order(updated_at: :desc)
   end
 
   def new
@@ -24,6 +24,17 @@ class Api::CategoriesController < ApplicationController
   end
 
   def update
+    @category = Category.find(params[:id])
+    @category.attributes = category_params
+    respond_to do |format|
+      if @category.save
+        format.html { redirect_to @category, notice: 'Category was successfully updated.' }
+        format.json { render :show, status: :ok, location: [:api, @category] }
+      else
+        format.html { render :edit }
+        format.json { render json: @category.errors.full_messages, status: :unprocessable_entity }
+      end
+    end
   end
 
   def show
@@ -49,5 +60,5 @@ class Api::CategoriesController < ApplicationController
     @category = Category.new
     @category.attributes = category_params
   end
-  
+
 end

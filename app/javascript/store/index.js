@@ -10,13 +10,13 @@ export const store = new Vuex.Store({
     categories: [],
     lastestPosts: [],
     errors: null,
-    showForm: false
+    dialog: false
   },
   getters: {
     loadedCategory: function(state) {
       return (categoryId) => {
         return state.categories.find((category) => {
-          return category.id == categoryId
+          return category.id == categoryId;
         })
       }
     },
@@ -30,8 +30,11 @@ export const store = new Vuex.Store({
     errors: function (state) {
       return state.errors;
     },
-    showForm: function(state) {
-      return state.showForm;
+    dialog: function(state) {
+      return state.dialog;
+    },
+    categories: function(state) {
+      return state.categories;
     }
   },
   mutations: {
@@ -47,14 +50,20 @@ export const store = new Vuex.Store({
     createCategory: function(state, payload) {
       state.categories.unshift(payload);
     },
+    updateCategory: function(state, payload) {
+      const category = this.getters.loadedCategory(payload.id);
+      for (const key in category) {
+        category[key] = payload[key];
+      }
+    },
     setError: function(state, payload) {
-      state.errors = payload
+      state.errors = payload;
     },
     clearError: function(state, payload) {
       state.errors = null;
     },
-    setShowForm: function(state, payload) {
-      state.showForm = payload;
+    setDialog: function(state, payload) {
+      state.dialog = payload;
     },
     destroyCategory: function(state, payload) {
       state.categories.splice(payload, 1)
@@ -80,21 +89,34 @@ export const store = new Vuex.Store({
     createCategory: function ({ commit, getters }, payload) {
       const category = {
         name: payload.name,
-        descriprion: payload.descriprion
+        description: payload.description
       }
       Vue.http.post('/api/categories.json', { category })
         .then((response) => {
           commit('createCategory', response.body)
-          commit('setShowForm', false)
-          // Vue.router.push('/')
+          commit('setDialog', false)
         })
         .catch((errors) => {
           commit('setError', errors.body)
           console.log(errors)
         })
     },
+    updateCategory: function ({ commit, getters }, payload) {
+      const category = {
+        name: payload.name,
+        description: payload.description
+      };
+      Vue.http.patch(`/api/categories/${payload.id}.json`, { category })
+      .then((response) => {
+          commit('updateCategory', response.body );
+          commit('setDialog', false);
+        })
+        .catch((errors) => {
+          commit('setError', errors.body);
+          console.log(errors);
+        })
+    },
     destroyCategory: function({ commit, getters }, payload) {
-      const category = getters.loadedCategory(payload)
       Vue.http.delete(`/api/categories/${payload.categoryId}.json`)
         .then((response) => {
           commit('destroyCategory', payload.index)
