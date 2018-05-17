@@ -9,7 +9,8 @@ export const store = new Vuex.Store({
   state: {
     categories: [],
     lastestPosts: [],
-    errors: null
+    errors: null,
+    showForm: false
   },
   getters: {
     loadedCategory: function(state) {
@@ -28,6 +29,9 @@ export const store = new Vuex.Store({
     },
     errors: function (state) {
       return state.errors;
+    },
+    showForm: function(state) {
+      return state.showForm;
     }
   },
   mutations: {
@@ -40,11 +44,20 @@ export const store = new Vuex.Store({
     createPost: function(state, payload) {
       state.lastestPosts.unshift(payload)
     },
+    createCategory: function(state, payload) {
+      state.categories.unshift(payload);
+    },
     setError: function(state, payload) {
       state.errors = payload
     },
     clearError: function(state, payload) {
       state.errors = null;
+    },
+    setShowForm: function(state, payload) {
+      state.showForm = payload;
+    },
+    destroyCategory: function(state, payload) {
+      state.categories.splice(payload, 1)
     }
   },
   actions: {
@@ -63,6 +76,33 @@ export const store = new Vuex.Store({
           commit('setError', errors.body)
           console.log(errors)
         })
+      },
+    createCategory: function ({ commit, getters }, payload) {
+      const category = {
+        name: payload.name,
+        descriprion: payload.descriprion
       }
+      Vue.http.post('/api/categories.json', { category })
+        .then((response) => {
+          commit('createCategory', response.body)
+          commit('setShowForm', false)
+          // Vue.router.push('/')
+        })
+        .catch((errors) => {
+          commit('setError', errors.body)
+          console.log(errors)
+        })
+    },
+    destroyCategory: function({ commit, getters }, payload) {
+      const category = getters.loadedCategory(payload)
+      Vue.http.delete(`/api/categories/${payload.categoryId}.json`)
+        .then((response) => {
+          commit('destroyCategory', payload.index)
+        })
+        .catch((errors) => {
+          commit('setError', errors.body)
+          console.log(errors)
+        })
+    }
   }
 })
