@@ -1,6 +1,7 @@
 class Api::CategoriesController < ApplicationController
   def index
     @categories = Category.includes(:posts).order(updated_at: :desc)
+    # render json: @categories
   end
 
   def new
@@ -38,6 +39,8 @@ class Api::CategoriesController < ApplicationController
   end
 
   def show
+    @category = Category.find(params[:id])
+    # render json: @category
   end
 
   def destroy

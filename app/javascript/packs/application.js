@@ -20,14 +20,23 @@ Vue.use(Vuetify)
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  Vue.http.headers.common['X-CSRF-Token'] = document.querySelector("meta[name=csrf-token]").content
-  
+  Vue.http.headers.common['X-CSRF-Token'] = document.querySelector("meta[name=csrf-token]").content;
+
   const app = new Vue({
     el: '#app',
     router,
     store,
     template: '<App />',
     components: { App },
-  })
+    // beforeMount: function() {
 
-})
+    // }
+    mounted: function() {
+      // if (this.$store.getters.categories.length < 1) {
+      //   this.$router.push('/');
+      // }
+      console.log(this.$router.history.current.params.id);
+    }
+  });
+
+});

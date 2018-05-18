@@ -1,19 +1,19 @@
 class Post < ApplicationRecord
   has_many :comments
-  belongs_to :category
+  belongs_to :category, counter_cache: true
 
   validates :name, presence: true
 
-  validates :name, presence: true, format: { 
+  validates :name, presence: true, format: {
     with: /[a-z]+\ [a-z\ A-Z]{2,}/,
-    message: "must contains minimum 2 words of minimum 2 letters" 
+    message: "must contains minimum 2 words of minimum 2 letters"
   }
-  validates :name, format: { 
+  validates :name, format: {
     with: /\.\z/,
-    message: "must ends with '.'" 
+    message: "must ends with '.'"
   }
-  validates :name, format: { 
+  validates :name, format: {
     with: /\A[A-Z]/,
-    message: "must starts with capital letter" 
+    message: "must starts with capital letter"
   }
 end

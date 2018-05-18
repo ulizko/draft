@@ -1,13 +1,21 @@
 <template>
   <v-container>
-    <v-layout column wrap>
+    <v-layout row wrap>
       <v-flex>
         <category-form :category="selectedCategory" :action="action"></category-form>
         <v-btn flat class="primary" @click.native.stop="dialog = true">Add category</v-btn>
         <div v-for="(category, index) in categories" :key="category.id">
           <v-card class="my-3" hover>
-            <v-card-title class='headline'>
-              {{ category.name }}
+            <v-card-title primary-title>
+              <div>
+                <div class="headline">{{ category.name }}</div>
+                <span class="secondary--text">
+                  Posts:
+                  <router-link :to="{ name: 'Category', params: { id: category.id }}">
+                    {{ postsCounts[index] }}
+                  </router-link>
+                </span>
+              </div>
             </v-card-title>
             <v-card-text>
               {{ category.description }}
@@ -16,7 +24,7 @@
               <v-btn flat color="success" @click="setCategory(index)">Edit</v-btn>
               <v-btn flat color="error" @click="destroyCategory(category.id, index)">Destroy</v-btn>
               <v-spacer></v-spacer>
-              <v-btn flat class="blue--text" :to="'/categories/' + category.id">Read More</v-btn>
+              <v-btn flat class="blue--text" :to="{ name: 'Category', params: { id: category.id }}">Go To Category</v-btn>
             </v-card-actions>
           </v-card>
         </div>
@@ -39,13 +47,8 @@
       categories: function() {
         return this.$store.state.categories;
       },
-      showForm: {
-        get: function() {
-          return this.$store.state.showForm;
-       },
-       set: function(value) {
-         this.$store.commit('setShowForm', value)
-       }
+      postsCounts: function() {
+        return this.categories.map((category) => category.posts.length)
       },
       dialog: {
         get: function() {
