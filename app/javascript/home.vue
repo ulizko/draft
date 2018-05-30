@@ -27,13 +27,6 @@ export default {
     posts: function() {
       return this.$store.state.lastestPosts;
     }
-  },
-  beforeCreate: function () {
-    this.$http.get('/api/posts.json')
-      .then((response) => { 
-        console.log(response.body)
-        this.$store.commit('loadLastestPosts', response.body)
-      })
   }
 }
 </script>

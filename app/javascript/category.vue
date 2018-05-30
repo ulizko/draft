@@ -44,29 +44,32 @@
 export default {
   data: function() {
     return {
-      category: {}
+      // category: {}
     }
   },
   computed: {
-    // category: function() {
-    //   return this.$store.getters.loadedCategory(this.$router.history.params.id);
-    // },
+    category: function() {
+      return this.$store.getters.loadedCategory(this.$router.history.current.params.id);
+    },
     postCount: function() {
       return this.category.posts.length;
+    },
+    commentsCount: function() {
+      return this.category.comments.length;
     }
 
   },
-  beforeCreate: function() {
-      console.log('bc')
-      const path = this.$router.history.current.params.id;
-      this.$http.get(`/api/categories/${path}.json`)
-      .then((response) => {
-        this.category = response.body;
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    }
+  // beforeCreate: function() {
+  //     console.log('bc')
+  //     const path = this.$router.history.current.params.id;
+  //     this.$http.get(`/api/categories/${path}.json`)
+  //     .then((response) => {
+  //       this.category = response.body;
+  //     })
+  //     .catch((error) => {
+  //       console.log(error)
+  //     })
+  //   }
 }
 </script>
 

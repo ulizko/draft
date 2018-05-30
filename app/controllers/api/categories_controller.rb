@@ -1,6 +1,6 @@
 class Api::CategoriesController < ApplicationController
   def index
-    @categories = Category.includes(:posts).order(updated_at: :desc)
+    @categories = Category.includes(:posts, :comments).order(updated_at: :desc)
     # render json: @categories
   end
 

@@ -66,13 +66,6 @@
         }
       }
     },
-    beforeCreate: function () {
-      this.$http.get('/api/categories.json')
-        .then((response) => {
-          console.log(response.body)
-          this.$store.commit('loadCategories', response.body)
-        })
-    },
     methods: {
       destroyCategory: function(categoryId, index) {
         this.$store.dispatch('destroyCategory', { categoryId, index });

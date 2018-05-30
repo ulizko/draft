@@ -1,6 +1,6 @@
 class Api::PostsController < ApplicationController
   def index
-    @posts = Post.order(created_at: :desc).last(10)
+    @posts = Post.includes(:comments).order(created_at: :desc).last(10)
   end
 
   def new
